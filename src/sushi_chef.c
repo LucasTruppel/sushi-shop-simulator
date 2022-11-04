@@ -24,7 +24,12 @@ void* sushi_chef_run(void* arg) {
         enum menu_item next_dish = rand() % 5;
         sushi_chef_prepare_food(self, next_dish);
         sushi_chef_place_food(self, next_dish);
+
+        if (global_clock->current_time >= global_clock->closing_time) {
+            break;
+        }
     }
+    sushi_chef_leave(self);
 
     pthread_exit(NULL);
 }
