@@ -77,9 +77,15 @@ void sushi_chef_leave(sushi_chef_t* self) {
     conveyor_belt_t* conveyor = globals_get_conveyor_belt();
 
     /* INSIRA SUA LÓGICA AQUI */
+
+    pthread_mutex_lock(&conveyor->_seats_mutex);
+    int old_position = self->_seat_position;
+    conveyor->_seats[old_position] = -1;
+    self->_seat_position = -1;
+    pthread_mutex_unlock(&conveyor->_seats_mutex);
     
     print_virtual_time(globals_get_virtual_clock());
-    fprintf(stdout, GREEN "[INFO]" NO_COLOR " Sushi Chef %d seated at conveyor->_seats[%d] stopped cooking and left the shop!\n", self->_id, self->_seat_position);    
+    fprintf(stdout, GREEN "[INFO]" NO_COLOR " Sushi Chef %d seated at conveyor->_seats[%d] stopped cooking and left the shop!\n", self->_id, old_position);    
 }
 
 void sushi_chef_place_food(sushi_chef_t* self, enum menu_item dish) {
