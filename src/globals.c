@@ -16,6 +16,7 @@
 virtual_clock_t* global_virtual_clock = NULL;
 conveyor_belt_t* global_conveyor_belt = NULL;
 queue_t* global_queue = NULL;
+int open_restaurant = TRUE;
 
 void globals_set_virtual_clock(virtual_clock_t* virtual_clock) {
     global_virtual_clock = virtual_clock;
@@ -39,6 +40,14 @@ void globals_set_queue(queue_t* queue) {
 
 queue_t* globals_get_queue() {
     return global_queue;
+}
+
+void globals_set_open_restaurant(int open) {
+    open_restaurant = open;
+}
+
+int globals_get_open_restaurant() {
+    return open_restaurant;
 }
 
 /**

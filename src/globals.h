@@ -49,6 +49,20 @@ extern void globals_set_queue(queue_t *queue);
 extern queue_t *globals_get_queue();
 
 /**
+ * @brief Muda o indicador de restaurante aberto (de modo global)
+ * 
+ * @param int 
+ */
+extern void globals_set_open_restaurant(int open);
+
+/**
+ * @brief Retorna indicador de restaurante aberto (de modo global)
+ * 
+ * @return int 
+ */
+extern int globals_get_open_restaurant();
+
+/**
  * @brief Finaliza todas as variáveis globais.
  * 
  */

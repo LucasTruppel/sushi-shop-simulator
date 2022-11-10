@@ -61,14 +61,13 @@ void hostess_guide_first_in_line_customer_to_conveyor_seat(int seat) {
 void* hostess_run() {
     virtual_clock_t* virtual_clock = globals_get_virtual_clock();
     queue_t* queue = globals_get_queue();
-    int sushi_shop_fechado = FALSE;
     //MODIFIQUE ESSA FUNÇÃO PARA GARANTIR O COMPORTAMENTO CORRETO E EFICAZ DO HOSTESS.
         
     //3.  CUIDADO COM PROBLEMAS DE SINCRONIZAÇÃO!
     //4.  NÃO REMOVA OS PRINTS!
 
     //1.  O HOSTESS DEVE FUNCIONAR EM LOOP, RETIRANDO CLIENTES DA FILA GLOBAL E ADICIONANDO-OS NA ESTEIRA GLOBAL CONFORME VAGAS SÃO LIBERADAS.
-    while (sushi_shop_fechado == FALSE) {  // Adicione a lógica para que o Hostess realize o fechamento do Sushi Shop!
+    while (globals_get_open_restaurant() == TRUE) {  // Adicione a lógica para que o Hostess realize o fechamento do Sushi Shop!
         if (queue->_length > 0) {
             int seat = hostess_check_for_a_free_conveyor_seat();
             hostess_guide_first_in_line_customer_to_conveyor_seat(seat);
@@ -77,7 +76,7 @@ void* hostess_run() {
         if (virtual_clock->current_time >= virtual_clock->closing_time){
             //Esvazia fila e finaliza customers
             queue_finalize(queue);
-            sushi_shop_fechado = TRUE;
+            globals_set_open_restaurant(FALSE);
         }
         msleep(3000/virtual_clock->clock_speed_multiplier);  // Não remova esse sleep!
     }
