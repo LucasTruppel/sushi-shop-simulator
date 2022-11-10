@@ -74,8 +74,10 @@ void* hostess_run() {
             hostess_guide_first_in_line_customer_to_conveyor_seat(seat);
         }
         //2.  QUANDO O SUSHI SHOP FECHAR, O HOSTESS DEVE PARAR DE GUIAR NOVOS CLIENTES DA FILA PARA A ESTEIRA, E ESVAZIAR A FILA GLOBAL, FINALIZANDO OS CLIENTES EM ESPERA.
-        else{
-
+        if (virtual_clock->current_time >= virtual_clock->closing_time){
+            //Esvazia fila e finaliza customers
+            queue_finalize(queue);
+            sushi_shop_fechado = TRUE;
         }
         msleep(3000/virtual_clock->clock_speed_multiplier);  // Não remova esse sleep!
     }
