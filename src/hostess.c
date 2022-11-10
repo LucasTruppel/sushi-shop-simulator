@@ -59,24 +59,23 @@ void hostess_guide_first_in_line_customer_to_conveyor_seat(int seat) {
 }
 
 void* hostess_run() {
-    /* 
-        MODIFIQUE ESSA FUNÇÃO PARA GARANTIR O COMPORTAMENTO CORRETO E EFICAZ DO HOSTESS.
-        NOTAS:
-        1.  O HOSTESS DEVE FUNCIONAR EM LOOP, RETIRANDO CLIENTES DA FILA GLOBAL E ADICIONANDO-OS NA
-            ESTEIRA GLOBAL CONFORME VAGAS SÃO LIBERADAS.
-        2.  QUANDO O SUSHI SHOP FECHAR, O HOSTESS DEVE PARAR DE GUIAR NOVOS CLIENTES DA FILA PARA 
-            A ESTEIRA, E ESVAZIAR A FILA GLOBAL, FINALIZANDO OS CLIENTES EM ESPERA.
-        3.  CUIDADO COM PROBLEMAS DE SINCRONIZAÇÃO!
-        4.  NÃO REMOVA OS PRINTS!
-    */
     virtual_clock_t* virtual_clock = globals_get_virtual_clock();
     queue_t* queue = globals_get_queue();
     int sushi_shop_fechado = FALSE;
+    //MODIFIQUE ESSA FUNÇÃO PARA GARANTIR O COMPORTAMENTO CORRETO E EFICAZ DO HOSTESS.
+        
+    //3.  CUIDADO COM PROBLEMAS DE SINCRONIZAÇÃO!
+    //4.  NÃO REMOVA OS PRINTS!
 
+    //1.  O HOSTESS DEVE FUNCIONAR EM LOOP, RETIRANDO CLIENTES DA FILA GLOBAL E ADICIONANDO-OS NA ESTEIRA GLOBAL CONFORME VAGAS SÃO LIBERADAS.
     while (sushi_shop_fechado == FALSE) {  // Adicione a lógica para que o Hostess realize o fechamento do Sushi Shop!
         if (queue->_length > 0) {
             int seat = hostess_check_for_a_free_conveyor_seat();
             hostess_guide_first_in_line_customer_to_conveyor_seat(seat);
+        }
+        //2.  QUANDO O SUSHI SHOP FECHAR, O HOSTESS DEVE PARAR DE GUIAR NOVOS CLIENTES DA FILA PARA A ESTEIRA, E ESVAZIAR A FILA GLOBAL, FINALIZANDO OS CLIENTES EM ESPERA.
+        else{
+
         }
         msleep(3000/virtual_clock->clock_speed_multiplier);  // Não remova esse sleep!
     }

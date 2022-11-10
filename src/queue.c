@@ -46,10 +46,15 @@ customer_t* queue_remove(queue_t *self) {
     if (self->_length > 0) {
         customer_t* customer = NULL;
         struct queue_item* item = NULL;
+        //Resgata customer de fato
         customer = self->_first->_customer;
+        //Resgata primeiro da fila (item da fila)
         item = self->_first;
+        //Atualiza quem será o primeiro da fila
         self->_first = self->_first->_next;
+        //Atualiza tamanho da fila (reduz)
         self->_length = self->_length - 1;
+        //Libera espaço de memória na fila
         free(item);
         return customer;
     }
