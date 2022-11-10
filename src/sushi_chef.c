@@ -105,7 +105,7 @@ void sushi_chef_place_food(sushi_chef_t* self, enum menu_item dish) {
     /* INSIRA SUA LÓGICA AQUI */
     while (TRUE) {
         pthread_mutex_lock(&conveyor_belt->_seats_mutex);
-        if (conveyor_belt->_food_slots[self->_seat_position] = -1) {
+        if (conveyor_belt->_food_slots[self->_seat_position] == -1) {
             conveyor_belt->_food_slots[self->_seat_position] = dish;
             print_virtual_time(globals_get_virtual_clock());
             fprintf(stdout, GREEN "[INFO]" NO_COLOR " Sushi Chef %d placed %u at conveyor->_foot_slot[%d]!\n", self->_id, dish, self->_seat_position);            
