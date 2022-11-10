@@ -22,8 +22,30 @@ void* customer_run(void* arg) {
         8.  LEMBRE-SE DE TOMAR CUIDADO COM ERROS DE CONCORRÊNCIA!
     */ 
     customer_t* self = (customer_t*) arg;
+    virtual_clock_t* virtual_clock = globals_get_virtual_clock();
+    conveyor_belt_t* conveyor = globals_get_conveyor_belt();
 
     /* INSIRA SUA LÓGICA AQUI */
+
+    while (globals_get_open_restaurant()) {
+        if (self->_seat_position != -1 && conveyor->_food_slots[self->_seat_position] != -1) {
+            int food = -1;
+            int picked = FALSE;
+            pthread_mutex_lock(&conveyor->_food_slots_mutex);
+            if (self->_wishes[conveyor->_food_slots[self->_seat_position]] > 0) {
+                food = conveyor->_food_slots[self->_seat_position];
+                customer_pick_food(self->_seat_position);
+                picked = TRUE;
+            }
+            pthread_mutex_unlock(&conveyor->_food_slots_mutex);
+
+            if (picked) {               
+                customer_eat(self, food);
+            }
+        }
+
+        msleep(120000/virtual_clock->clock_speed_multiplier);
+    }
     
     msleep(1000000);  // REMOVA ESTE SLEEP APÓS IMPLEMENTAR SUA SOLUÇÃO!
     pthread_exit(NULL);
@@ -31,7 +53,7 @@ void* customer_run(void* arg) {
 
 void customer_pick_food(int food_slot) {
     /* 
-        MODIFIQUE ESSA FUNÇÃO PARA GARANTIR O COMPORTAMENTO CORRETO E EFICAZ DO CLIENTE.
+        MODIFIQUE ESSA FUNÇÃO PARA GARANTIR O COMPORTAMENTO CORRETO E EFICAsZ DO CLIENTE.
         NOTAS:
         1.  O CLIENTE SÓ PODE COMEÇAR A PEGAR COMIDA APÓS ESTAR SENTADO EM UMA VAGA DA ESTEIRA.
         2.  O CLIENTE SÓ SENTARÁ QUANDO O HOSTESS ATUALIZAR O VALOR customer_t->_seat_position.
@@ -96,7 +118,7 @@ void customer_eat(customer_t* self, enum menu_item food) {
             fprintf(stdout, GREEN "[INFO]" NO_COLOR " Customer %d finished eating Tofu!\n", self->_id);
             break; 
         default:
-            fprintf(stdout, RED "[ERROR] Invalid menu_item variant passed to `customer_eat()`.\n" NO_COLOR);
+            fprintf(stdout, RED "[ERROR] Invalid menu_item variant passed to `customer_eat()`: %d.\n" NO_COLOR, food);
             exit(EXIT_FAILURE);
     }
 }
