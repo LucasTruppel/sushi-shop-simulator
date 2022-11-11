@@ -46,9 +46,9 @@ void* customer_run(void* arg) {
 
         msleep(120000/virtual_clock->clock_speed_multiplier);
     }
-    customer_leave(self);
+    customer_leave(self, conveyor);
     
-    msleep(1000000);  // REMOVA ESTE SLEEP APÓS IMPLEMENTAR SUA SOLUÇÃO!
+    //msleep(1000000);  // REMOVA ESTE SLEEP APÓS IMPLEMENTAR SUA SOLUÇÃO!
     pthread_exit(NULL);
 }
 
@@ -129,15 +129,19 @@ void customer_eat(customer_t* self, enum menu_item food) {
     }
 }
 
-void customer_leave(customer_t* self) {
+void customer_leave(customer_t* self, conveyor_belt_t* conveyor) {
     /*
         MODIFIQUE ESSA FUNÇÃO PARA GARANTIR O COMPORTAMENTO CORRETO E EFICAZ DO CLIENTE.
         NOTAS:
         1.  ESSA FUNÇÃO DEVERÁ REMOVER O CLIENTE DO ASSENTO DO CONVEYOR_BELT GLOBAL QUANDO EXECUTADA.
     */
-    conveyor_belt_t* conveyor_belt = globals_get_conveyor_belt();
 
     /* INSIRA SUA LÓGICA AQUI */
+
+    pthread_mutex_lock(&conveyor->_seats_mutex);
+    conveyor->_seats[self->_seat_position] = -1;
+    self->_seat_position = -1;
+    pthread_mutex_unlock(&conveyor->_seats_mutex);
 }
 
 customer_t* customer_init() {

@@ -26,6 +26,6 @@ void print_customer(customer_t* self);
 
 void customer_pick_food(conveyor_belt_t* conveyor, int food_slot);
 void customer_eat(customer_t* self, enum menu_item food);
-void customer_leave(customer_t* self);
+void customer_leave(customer_t* self, conveyor_belt_t* conveyor);
 
 #endif  //__CUSTOMER_H__
