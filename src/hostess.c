@@ -22,7 +22,7 @@ int hostess_check_for_a_free_conveyor_seat() {
     fprintf(stdout, GREEN "[INFO]" NO_COLOR " O Hostess está procurando por um assento livre...\n");
     print_conveyor_belt(conveyor);
 
-    while (TRUE) {
+    while (virtual_clock->current_time < virtual_clock->closing_time) {
         for (int i=0; i<conveyor->_size; i++) {
             if (conveyor->_seats[i] == -1 && i !=0) {  // Atenção à regra! (-1 = livre, 0 = sushi_chef, 1 = customer)
                 print_virtual_time(globals_get_virtual_clock());
@@ -32,6 +32,7 @@ int hostess_check_for_a_free_conveyor_seat() {
         }
         msleep(120000/virtual_clock->clock_speed_multiplier);  // Não remova esse sleep!
     }
+    return -1;
 }
 
 void hostess_guide_first_in_line_customer_to_conveyor_seat(int seat) {
@@ -59,23 +60,29 @@ void hostess_guide_first_in_line_customer_to_conveyor_seat(int seat) {
 }
 
 void* hostess_run() {
+    /* 
+        MODIFIQUE ESSA FUNÇÃO PARA GARANTIR O COMPORTAMENTO CORRETO E EFICAZ DO HOSTESS.
+        NOTAS:
+        1.  O HOSTESS DEVE FUNCIONAR EM LOOP, RETIRANDO CLIENTES DA FILA GLOBAL E ADICIONANDO-OS NA
+            ESTEIRA GLOBAL CONFORME VAGAS SÃO LIBERADAS.
+        2.  QUANDO O SUSHI SHOP FECHAR, O HOSTESS DEVE PARAR DE GUIAR NOVOS CLIENTES DA FILA PARA 
+            A ESTEIRA, E ESVAZIAR A FILA GLOBAL, FINALIZANDO OS CLIENTES EM ESPERA.
+        3.  CUIDADO COM PROBLEMAS DE SINCRONIZAÇÃO!
+        4.  NÃO REMOVA OS PRINTS!
+    */
     virtual_clock_t* virtual_clock = globals_get_virtual_clock();
     queue_t* queue = globals_get_queue();
-    //MODIFIQUE ESSA FUNÇÃO PARA GARANTIR O COMPORTAMENTO CORRETO E EFICAZ DO HOSTESS.
-        
-    //3.  CUIDADO COM PROBLEMAS DE SINCRONIZAÇÃO!
-    //4.  NÃO REMOVA OS PRINTS!
 
-    //1.  O HOSTESS DEVE FUNCIONAR EM LOOP, RETIRANDO CLIENTES DA FILA GLOBAL E ADICIONANDO-OS NA ESTEIRA GLOBAL CONFORME VAGAS SÃO LIBERADAS.
     while (globals_get_open_restaurant() == TRUE) {  // Adicione a lógica para que o Hostess realize o fechamento do Sushi Shop!
         if (queue->_length > 0) {
             int seat = hostess_check_for_a_free_conveyor_seat();
-            hostess_guide_first_in_line_customer_to_conveyor_seat(seat);
+            if (seat > 0) {
+                hostess_guide_first_in_line_customer_to_conveyor_seat(seat);
+            }
         }
-        //2.  QUANDO O SUSHI SHOP FECHAR, O HOSTESS DEVE PARAR DE GUIAR NOVOS CLIENTES DA FILA PARA A ESTEIRA, E ESVAZIAR A FILA GLOBAL, FINALIZANDO OS CLIENTES EM ESPERA.
+
         if (virtual_clock->current_time >= virtual_clock->closing_time){
-            //Esvazia fila e finaliza customers
-            queue_finalize(queue);
+            //queue_finalize(queue);
             globals_set_open_restaurant(FALSE);
         }
         msleep(3000/virtual_clock->clock_speed_multiplier);  // Não remova esse sleep!
