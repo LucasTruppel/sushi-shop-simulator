@@ -27,7 +27,7 @@ void* customer_run(void* arg) {
 
     /* INSIRA SUA LÓGICA AQUI */
 
-    while (globals_get_open_restaurant()) {
+    while (globals_get_open_restaurant() && self->_wishes_sum != 0) {
         if (self->_seat_position != -1 && conveyor->_food_slots[self->_seat_position] != -1) {
             int food = -1;
             int picked = FALSE;
@@ -46,6 +46,7 @@ void* customer_run(void* arg) {
 
         msleep(120000/virtual_clock->clock_speed_multiplier);
     }
+    customer_leave(self);
     
     msleep(1000000);  // REMOVA ESTE SLEEP APÓS IMPLEMENTAR SUA SOLUÇÃO!
     pthread_exit(NULL);
@@ -142,8 +143,11 @@ customer_t* customer_init() {
         exit(EXIT_FAILURE);
     }
     self->_id = rand() % 1000;
+    self->_wishes_sum = 0;
     for (int i=0; i<=4; i++) {
-        self->_wishes[i] = (rand() % 4);
+        int quantity = (rand() % 4);
+        self->_wishes[i] = quantity;
+        self->_wishes_sum += quantity;
     }
     self->_seat_position = -1;
     pthread_create(&self->thread, NULL, customer_run, (void *) self);
