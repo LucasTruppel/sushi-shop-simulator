@@ -34,7 +34,7 @@ void* customer_run(void* arg) {
             pthread_mutex_lock(&conveyor->_food_slots_mutex);
             if (self->_wishes[conveyor->_food_slots[self->_seat_position]] > 0) {
                 food = conveyor->_food_slots[self->_seat_position];
-                customer_pick_food(self->_seat_position);
+                customer_pick_food(conveyor, self->_seat_position);
                 picked = TRUE;
             }
             pthread_mutex_unlock(&conveyor->_food_slots_mutex);
@@ -52,7 +52,7 @@ void* customer_run(void* arg) {
     pthread_exit(NULL);
 }
 
-void customer_pick_food(int food_slot) {
+void customer_pick_food(conveyor_belt_t* conveyor, int food_slot) {
     /* 
         MODIFIQUE ESSA FUNÇÃO PARA GARANTIR O COMPORTAMENTO CORRETO E EFICAsZ DO CLIENTE.
         NOTAS:
@@ -65,6 +65,9 @@ void customer_pick_food(int food_slot) {
     */
 
     /* INSIRA SUA LÓGICA AQUI */
+
+    conveyor->_food_slots[food_slot] = -1;
+    
 }
 
 void customer_eat(customer_t* self, enum menu_item food) {
@@ -79,6 +82,8 @@ void customer_eat(customer_t* self, enum menu_item food) {
     */
 
     /* INSIRA SUA LÓGICA AQUI */
+    self->_wishes[food] += -1;
+    self->_wishes_sum += -1;
 
     /* NÃO EDITE O CONTEÚDO ABAIXO */
     virtual_clock_t* global_clock = globals_get_virtual_clock();
