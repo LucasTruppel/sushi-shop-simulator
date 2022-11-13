@@ -63,6 +63,62 @@ extern void globals_set_open_restaurant(int open);
 extern int globals_get_open_restaurant();
 
 /**
+ * @brief Muda a quantidade de clientes atendidos (de modo global)
+ * 
+ * @param int 
+ */
+extern void globals_set_costumers(int costumers);
+
+/**
+ * @brief Retorna a quantidade de clientes atendidos (de modo global)
+ * 
+ * @return int 
+ */
+extern int globals_get_costumers();
+
+/**
+ * @brief Muda a quantidade de clientes satisfeitos (de modo global)
+ * 
+ * @param int 
+ */
+extern void globals_set_satisfied_costumers(int satisfied_costumers);
+
+/**
+ * @brief Retorna a quantidade de clientes satisfeitos (de modo global)
+ * 
+ * @return int 
+ */
+extern int globals_get_satisfied_costumers();
+
+/**
+ * @brief Incrementa uma posição do vetor de comidas produzidas (de modo global)
+ * 
+ * @param int
+ */
+extern void globals_increment_food_produced(int i);
+
+/**
+ * @brief Retorna o vetor de comidas produzidas (de modo global)
+ * 
+ * @return int* 
+ */
+extern int* globals_get_food_produced();
+
+/**
+ * @brief Incrementa uma posição do vetor de comidas comidas (de modo global)
+ * 
+ * @param int
+ */
+extern void globals_increment_food_eaten(int i);
+
+/**
+ * @brief Retorna o vetor de comidas comidas (de modo global)
+ * 
+ * @return int* 
+ */
+extern int* globals_get_food_eaten();
+
+/**
  * @brief Finaliza todas as variáveis globais.
  * 
  */

@@ -16,7 +16,7 @@ void* virtual_clock_run(void* arg) {
             fprintf(stdout, GREEN "[INFO]" RED " RESTAURANT IS CLOSED!!!\n");
             close_printed = TRUE;
         }
-        if (self->current_time >= self->closing_time + 600 ) {
+        if (self->current_time >= self->closing_time + 300 ) {
             break;
         }
         self->current_time += 1;

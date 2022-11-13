@@ -116,6 +116,7 @@ void sushi_chef_place_food(sushi_chef_t* self, enum menu_item dish) {
 void sushi_chef_prepare_food(sushi_chef_t* self, enum menu_item menu_item) {
     /* NÃO EDITE O CONTEÚDO DESSA FUNÇÃO */
     virtual_clock_t* global_clock = globals_get_virtual_clock();
+    globals_increment_food_produced(menu_item);
     switch (menu_item) {
         case Sushi:
             print_virtual_time(globals_get_virtual_clock());

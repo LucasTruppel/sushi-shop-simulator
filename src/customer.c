@@ -64,6 +64,7 @@ void customer_pick_food(conveyor_belt_t* conveyor, int food_slot) {
 
     /* INSIRA SUA LÓGICA AQUI */
 
+    globals_increment_food_eaten(conveyor->_food_slots[food_slot]);
     conveyor->_food_slots[food_slot] = -1;
     
 }
@@ -140,6 +141,9 @@ void customer_leave(customer_t* self, conveyor_belt_t* conveyor) {
         pthread_mutex_lock(&conveyor->_seats_mutex);
         conveyor->_seats[self->_seat_position] = -1;
         self->_seat_position = -1;
+        if (self->_wishes_sum == 0) {
+            globals_set_satisfied_costumers(globals_get_satisfied_costumers() + 1);
+        }
         pthread_mutex_unlock(&conveyor->_seats_mutex);
     }
     customer_finalize(self);
