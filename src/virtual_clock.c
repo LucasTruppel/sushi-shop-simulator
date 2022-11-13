@@ -9,10 +9,15 @@
 void* virtual_clock_run(void* arg) {
     /* ESSA FUNÇÃO JÁ POSSUÍ A LÓGICA BÁSICA DE FUNCIONAMENTO DO RELÓGIO VIRTUAL */
     virtual_clock_t* self = (virtual_clock_t*) arg;
+    int close_printed = FALSE;
     while (TRUE) {
-        if (self->current_time >= self->closing_time) {
+        if (self->current_time >= self->closing_time && !close_printed) {
             print_virtual_time(self);
             fprintf(stdout, GREEN "[INFO]" RED " RESTAURANT IS CLOSED!!!\n");
+            close_printed = TRUE;
+        }
+        if (self->current_time >= self->closing_time + 600 ) {
+            break;
         }
         self->current_time += 1;
         msleep(1000/self->clock_speed_multiplier);

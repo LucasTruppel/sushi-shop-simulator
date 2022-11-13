@@ -82,8 +82,8 @@ void* hostess_run() {
         }
 
         if (virtual_clock->current_time >= virtual_clock->closing_time){
-            //queue_finalize(queue);
             globals_set_open_restaurant(FALSE);
+            //queue_finalize(queue);
         }
         msleep(3000/virtual_clock->clock_speed_multiplier);  // Não remova esse sleep!
     }

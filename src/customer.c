@@ -45,7 +45,6 @@ void* customer_run(void* arg) {
         }
 
         msleep(5000/virtual_clock->clock_speed_multiplier);
-        //printf("INDICADOR: %d\n", globals_get_open_restaurant());
     }
     customer_leave(self, conveyor);
     
@@ -145,6 +144,7 @@ void customer_leave(customer_t* self, conveyor_belt_t* conveyor) {
         self->_seat_position = -1;
         pthread_mutex_unlock(&conveyor->_seats_mutex);
     }
+    customer_finalize(self);
 }
 
 customer_t* customer_init() {
