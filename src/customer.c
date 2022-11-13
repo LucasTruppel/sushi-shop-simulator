@@ -28,18 +28,28 @@ void* customer_run(void* arg) {
     /* INSIRA SUA LÓGICA AQUI */
 
     while (globals_get_open_restaurant() && self->_wishes_sum != 0) {
-        if (self->_seat_position != -1 && conveyor->_food_slots[self->_seat_position] != -1) {
+        if (self->_seat_position != -1) {
             int food = -1;
             int picked = FALSE;
             pthread_mutex_lock(&conveyor->_food_slots_mutex);
-            if (self->_wishes[conveyor->_food_slots[self->_seat_position]] > 0) {
+            if (conveyor->_food_slots[self->_seat_position] != -1 && self->_wishes[conveyor->_food_slots[self->_seat_position]] > 0) {
                 food = conveyor->_food_slots[self->_seat_position];
                 customer_pick_food(conveyor, self->_seat_position);
+                picked = TRUE;
+            } else if (self->_seat_position != 1 && conveyor->_food_slots[self->_seat_position -1] != -1 &&  
+            self->_wishes[conveyor->_food_slots[self->_seat_position -1]] > 0) {
+                food = conveyor->_food_slots[self->_seat_position -1];
+                customer_pick_food(conveyor, self->_seat_position -1);
+                picked = TRUE;
+            } else if (self->_seat_position != conveyor->_size -1 && conveyor->_food_slots[self->_seat_position +1] != -1 && 
+            self->_wishes[conveyor->_food_slots[self->_seat_position +1]] > 0) {
+                food = conveyor->_food_slots[self->_seat_position +1];
+                customer_pick_food(conveyor, self->_seat_position +1);
                 picked = TRUE;
             }
             pthread_mutex_unlock(&conveyor->_food_slots_mutex);
 
-            if (picked) {               
+            if (picked) {          
                 customer_eat(self, food);
             }
         }
