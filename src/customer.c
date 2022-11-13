@@ -47,8 +47,6 @@ void* customer_run(void* arg) {
         msleep(5000/virtual_clock->clock_speed_multiplier);
     }
     customer_leave(self, conveyor);
-    
-    //msleep(1000000);  // REMOVA ESTE SLEEP APÓS IMPLEMENTAR SUA SOLUÇÃO!
     pthread_exit(NULL);
 }
 

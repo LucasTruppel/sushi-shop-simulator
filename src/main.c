@@ -32,13 +32,9 @@ int main (int argc, char** argv) {
     hostess_t* hostess = hostess_init();
 
     /* Join threads and free used memory */
-    printf("\nrodou aqui 1\n");
     hostess_finalize(hostess);
-    printf("\nrodou aqui 2\n");
     sushi_chef_finalize(sushi_chef);
-    printf("\nrodou aqui 3\n");
     globals_finalize();
-    printf("\nrodou aqui 4\n");
 
     return EXIT_SUCCESS;
 }
