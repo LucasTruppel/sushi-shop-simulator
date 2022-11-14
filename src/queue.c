@@ -15,6 +15,9 @@ void* queue_run(void *arg) {
         customer_t* customer = customer_init();
         queue_insert(self, customer);
         print_virtual_time(clock);
+        if (!globals_get_open_restaurant()) {
+            break;
+        }
         fprintf(stdout, GREEN "[INFO]" NO_COLOR " Customer %d arrived at the Sushi Shop queue!\n", customer->_id);
         print_queue(self);
         msleep((rand() % 120000)/clock->clock_speed_multiplier);
