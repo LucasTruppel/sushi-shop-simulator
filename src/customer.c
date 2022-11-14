@@ -27,6 +27,10 @@ void* customer_run(void* arg) {
 
     /* INSIRA SUA LÓGICA AQUI */
 
+    while (globals_get_open_restaurant() && self->_wishes_sum == 0 && self->_seat_position == -1) {
+        msleep(120000/virtual_clock->clock_speed_multiplier);
+    }
+
     while (globals_get_open_restaurant() && self->_wishes_sum != 0) {
         if (self->_seat_position != -1) {
             int food = -1;
