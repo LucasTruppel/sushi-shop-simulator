@@ -159,8 +159,8 @@ void customer_leave(customer_t* self, conveyor_belt_t* conveyor) {
             globals_set_satisfied_costumers(globals_get_satisfied_costumers() + 1);
         }
         pthread_mutex_unlock(&conveyor->_seats_mutex);
+        customer_finalize(self);
     }
-    customer_finalize(self);
 }
 
 customer_t* customer_init() {
