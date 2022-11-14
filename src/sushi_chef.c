@@ -99,7 +99,7 @@ void sushi_chef_place_food(sushi_chef_t* self, enum menu_item dish) {
     fprintf(stdout, GREEN "[INFO]" NO_COLOR " Sushi Chef %d wants to place %u at conveyor->_foot_slot[%d]!\n", self->_id, dish, self->_seat_position);
 
     /* INSIRA SUA LÓGICA AQUI */
-    while (TRUE) {
+    while (globals_get_open_restaurant()) {
         pthread_mutex_lock(&conveyor_belt->_food_slots_mutex);
         if (conveyor_belt->_food_slots[self->_seat_position] == -1) {
             conveyor_belt->_food_slots[self->_seat_position] = dish;
