@@ -93,8 +93,7 @@ void separator() {
 void usage(char* program_name) {
     fprintf(stdout, MAGENTA "Usage: " NO_COLOR "%s [OPTIONS]\n", program_name);
     fprintf(stdout, MAGENTA "Options:\n" NO_COLOR);
-    fprintf(stdout, "  -c  Number of sushi chefs (default=2).\n");
-    fprintf(stdout, "  -b  Conveyor belt capacity (default=50).\n");
+    fprintf(stdout, "  -b  Conveyor belt capacity (default=20).\n");
     fprintf(stdout, "  -o  Opening time (default=10).\n");
     fprintf(stdout, "  -x  Closing time (default=18).\n");
     fprintf(stdout, "  -m  Clock speed multiplier (default=60).\n");

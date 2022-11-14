@@ -6,7 +6,7 @@
 
 #define __PROGRAM_NAME__ "assignment-1"
 #define __PROGRAM_VERSION__ "0.0.1"
-#define __PROGRAM_AUTHOR__ "Vanderlei Munhoz (munhoz@proton.me)"
+#define __PROGRAM_AUTHOR__ "Lucas Castro Truppel Machado"
 
 /**
  * @brief Definição de constantes booleanas.
