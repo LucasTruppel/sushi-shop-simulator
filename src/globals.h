@@ -91,6 +91,20 @@ extern void globals_set_satisfied_costumers(int satisfied_costumers);
 extern int globals_get_satisfied_costumers();
 
 /**
+ * @brief Incrementa o total consumido (de modo global)
+ * 
+ * @param 
+ */
+extern void globals_increment_total_eaten();
+
+/**
+ * @brief Retorna o total consumido (de modo global)
+ * 
+ * @return int 
+ */
+extern int globals_get_total_eaten();
+
+/**
  * @brief Incrementa uma posição do vetor de comidas produzidas (de modo global)
  * 
  * @param int

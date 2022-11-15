@@ -19,6 +19,7 @@ queue_t* global_queue = NULL;
 int global_open_restaurant = TRUE;
 int global_costumers = 0;
 int global_satisfied_costumers = 0;
+int global_total_eaten = 0;
 int global_food_produced[] = {0, 0, 0, 0, 0};
 int global_food_eaten[] = {0, 0, 0, 0, 0};
 
@@ -68,6 +69,14 @@ void globals_set_satisfied_costumers(int satisfied_costumers) {
 
 int globals_get_satisfied_costumers() {
     return global_satisfied_costumers;
+}
+
+void globals_increment_total_eaten() {
+    global_total_eaten += 1;
+}
+
+int globals_get_total_eaten() {
+    return global_total_eaten;
 }
 
 void globals_increment_food_produced(int i) {

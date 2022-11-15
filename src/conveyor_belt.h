@@ -26,6 +26,7 @@ typedef struct conveyor_belt {
 
 conveyor_belt_t* conveyor_belt_init(config_t* config);
 void* conveyor_belt_run(void* arg);
+int conveyor_is_full(conveyor_belt_t* self);
 void conveyor_belt_finalize(conveyor_belt_t* self);
 
 void print_conveyor_belt(conveyor_belt_t* self);

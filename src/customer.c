@@ -58,7 +58,7 @@ void* customer_run(void* arg) {
             }
         }
 
-        msleep(5000/virtual_clock->clock_speed_multiplier);
+        msleep(CONVEYOR_MOVING_PERIOD/virtual_clock->clock_speed_multiplier);
     }
     customer_leave(self, conveyor);
     pthread_exit(NULL);
@@ -79,6 +79,7 @@ void customer_pick_food(conveyor_belt_t* conveyor, int food_slot) {
     /* INSIRA SUA LÓGICA AQUI */
 
     globals_increment_food_eaten(conveyor->_food_slots[food_slot]);
+    globals_increment_total_eaten();
     conveyor->_food_slots[food_slot] = -1;
     
 }

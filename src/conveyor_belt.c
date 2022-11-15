@@ -11,19 +11,44 @@ void* conveyor_belt_run(void* arg) {
     /* NÃO PRECISA ALTERAR ESSA FUNÇÃO */
     conveyor_belt_t* self = (conveyor_belt_t*) arg;
     virtual_clock_t* virtual_clock = globals_get_virtual_clock();
+    
+    // Variáveis para avaliar a quanto tempo os costumers estão sem comer.
+    int last_total_eaten = 0;
+    int total_eaten = 0;
+    int times_equal = 0;
+
     while (globals_get_open_restaurant()) {
         msleep(CONVEYOR_IDLE_PERIOD/virtual_clock->clock_speed_multiplier);
         print_virtual_time(globals_get_virtual_clock());
         fprintf(stdout, GREEN "[INFO]" NO_COLOR " Conveyor belt started moving...\n");
         print_conveyor_belt(self);
 
-        msleep(CONVEYOR_MOVING_PERIOD/virtual_clock->clock_speed_multiplier);
+        msleep(CONVEYOR_MOVING_PERIOD/virtual_clock->clock_speed_multiplier);      
         pthread_mutex_lock(&self->_food_slots_mutex);
-        int last = self->_food_slots[0];
-        for (int i=0; i<self->_size-1; i++) {
-            self->_food_slots[i] = self->_food_slots[i+1];
+
+        total_eaten = globals_get_total_eaten();
+        if (total_eaten == last_total_eaten) {
+            times_equal += 1;
+        } else {
+            times_equal = 0;
         }
-        self->_food_slots[self->_size-1] = last;
+        last_total_eaten = total_eaten;
+
+        if (times_equal >= 2*self->_size && conveyor_is_full(self)) {
+            // Caso a esteira tenha se movido 2*size vezes, ninguém pegou nenhuma comida e a esteira esteja cheia, limpa a esteira
+            for (int i=0; i<self->_size; i++) {
+                self->_food_slots[i] = -1;
+            }
+
+        } else {
+            // Move a esteira
+            int last = self->_food_slots[0];
+            for (int i=0; i<self->_size-1; i++) {
+                self->_food_slots[i] = self->_food_slots[i+1];
+            }
+            self->_food_slots[self->_size-1] = last;  
+        }
+
         pthread_mutex_unlock(&self->_food_slots_mutex);
 
         print_virtual_time(globals_get_virtual_clock());
@@ -31,6 +56,17 @@ void* conveyor_belt_run(void* arg) {
         print_conveyor_belt(self);
     }
     pthread_exit(NULL);
+}
+
+int conveyor_is_full(conveyor_belt_t* self) {
+    int full = TRUE;
+    for (int i=0; i<self->_size; i++) {
+        if (self->_food_slots[i] == -1) {
+            full = FALSE;
+            break;
+        }
+    }
+    return full;
 }
 
 conveyor_belt_t* conveyor_belt_init(config_t* config) {
